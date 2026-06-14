@@ -2,29 +2,33 @@ package main
 
 import "strings"
 
-func Render(s string, banner map[rune][]string) string {
-	lines := strings.Split(s, "\\n")
-	result := ""
-	emptyString := true
-	for _, i := range lines {
-		if i == "" {
-			result += "\n"
+func Render(input string, banner map[rune][]string) string {
+	textLines := strings.Split(input, "\\n")
+
+	output := ""
+	allLinesEmpty := true
+
+	for _, line := range textLines {
+		if line == "" {
+			output += "\n"
 			continue
 		}
-		if i != "" {
-			emptyString = false
-		}
+
+		allLinesEmpty = false
+
 		for row := 0; row < 8; row++ {
-			for _, ch := range i {
-				if art, ok := banner[ch]; ok {
-					result += art[row]
+			for _, char := range line {
+				if artRows, exists := banner[char]; exists {
+					output += artRows[row]
 				}
 			}
-			result += "\n"
+			output += "\n"
 		}
 	}
-	if emptyString == true {
-		return strings.Repeat("\n", len(lines)-1)
+
+	if allLinesEmpty {
+		return strings.Repeat("\n", len(textLines)-1)
 	}
-	return result
+
+	return output
 }
