@@ -13,7 +13,7 @@ func main() {
 
 	bannerfile := "standard.txt"
 	if len(os.Args) == 3 {
-		bannerfile = os.Args[2] + ".txt"
+		bannerfile = os.Args[2]
 	}
 
 	banner, err := LoadBanner(bannerfile)
