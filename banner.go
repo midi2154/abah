@@ -7,7 +7,7 @@ import (
 )
 
 func LoadBanner(filename string) (map[rune][]string, error) {
-	graph := map[rune][]string{}
+	graph := make(map[rune][]string)
 
 	data, err := os.ReadFile(filename)
 	if err != nil {
@@ -18,15 +18,16 @@ func LoadBanner(filename string) (map[rune][]string, error) {
 		return nil, errors.New("empty file")
 	}
 
-	result := strings.Split(string(data), "\n")
-
-	if len(result) < 855 {
-		return nil, errors.New("incomplete banner file")
-	}
+	lines := strings.Split(string(data), "\n")
 
 	for i := ' '; i <= '~'; i++ {
 		start := int(i-32) * 9
-		graph[i] = result[start+1 : start+9]
+
+		if start+8 >= len(lines) {
+			return nil, errors.New("incomplete banner file")
+		}
+
+		graph[i] = lines[start+1 : start+9]
 	}
 
 	return graph, nil
